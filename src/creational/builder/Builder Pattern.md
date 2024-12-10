@@ -562,7 +562,7 @@ FacatedBuilder, birden çok builder'ın tek bir builder çatısı altında birle
 
 ## Sonuç
 
-Çeşitli ihtiyaçlar için bimbir çeşit implementasyon bulunmaktadır. İhtiyacımız ne ise ona evrilen ve temiz implementasyonlar kullanmak ilerideki developer'ı (hem bizi hem başkalarını) daha rahat ettirir. Bu pattern, çeşitli nesneleri daha anlaşılır bir biçimde oluşturma konusunda bize ciddi oranda yardımcı olmaktadır.
+Çeşitli ihtiyaçlar için çok fazla çeşit implementasyon bulunmaktadır. İhtiyaca göre belirli kuralları izlemek developer'ı hem de sonraki developer'ı çok daha iyi ve hızlı bir şekilde development yapmasını sağlar. Bu pattern, çeşitli nesneleri daha anlaşılır bir biçimde oluşturma konusunda ciddi oranda yardımcı olmakla birlikte, zengin çeşitliliği ile çoğu ihtiyacı karşılayacak implementasyonları mevcuttur.
 
 
 ---
