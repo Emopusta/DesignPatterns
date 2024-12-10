@@ -22,7 +22,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
 2. Creational Patterns
     - [Singleton](./src/creational/singleton/Singleton%20Pattern.md)
     - [Factory Method and Abstract Factory](./src/creational/factory-method-ve-abstract-factory/Factory%20Method%20ve%20Abstract%20Factory%20Pattern.md)
-    - Builder
+    - [Builder](./src/creational/builder/Builder%20Pattern.md)
     - Prototype
 3. Structural Patterns
     - Adapter
