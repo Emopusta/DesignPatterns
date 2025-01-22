@@ -28,7 +28,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - Adapter
     - Composite
     - Proxy
-    - Flyweight
+    - [Flyweight](./src/structural/flyweight/Flyweight%20Pattern.md)
     - Facade
     - Bridge
     - Decorator
