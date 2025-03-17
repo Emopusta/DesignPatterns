@@ -30,7 +30,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - Proxy
     - [Flyweight](./src/structural/flyweight/Flyweight%20Pattern.md)
     - Facade
-    - Bridge
+    - [Bridge](./src/structural/bridge/Bridge%20Pattern.md)
     - Decorator
 
 
