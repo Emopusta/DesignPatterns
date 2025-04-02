@@ -2,6 +2,13 @@ Tanım: Decouple Abstraction from its Implementation.
 
 Bridge Pattern, bir implementasyonu iki soyut class'a ayırarak hem implementasyonu Open-Closed Principle doğrultusunda enine genişletilebilmesini sağlamakta hem de her koşulun sağlanması için gereken gereksiz kodlamalardan kaçınılmasını sağlar. Sağladığı etkilerden biri ise plugin implementasyonlarında kullanılabilmektedir. Böylece source code daha ``Orthononal`` olur.
 
+- [Default Implementation](#default-implementation)
+- [Generic Implementation](#generic-implementasyonu)
+- [Generic Base Implementation](#generic-base-class-implementasyonu)
+
+
+# Default Implementation
+
 Örnek: ErrorConsoleLogger isimli uygulamadaki oluşan hataları loglayan bir class ve bu class logları konsola yazmaktadır:
 
 ```
@@ -135,7 +142,7 @@ Writing to File: Error: File log entry
 
 Böylece en baştaki gibi 9 adet farklı class'a benzer kodların implemente edilmesi yerine aynı durum karşılanırsa 6 adet (`ErrorLogger, InfoLogger, DebugLogger` ve `ConsoleLog, FileLog, CloudLog`) class ile hem daha temiz hem de daha az miktarda kod ile implemente edilmektedir.
 
-# Bonus Generic Implementation
+# Generic Implementation
 
 Bu ConcreteAbstract class'ları generic bir yapıyla daha temiz bir şekilde servis olarak kullanabilir miyiz?
 
@@ -180,6 +187,8 @@ public class ErrorLogger<T> : LoggerAbstraction<T> where T : ILoggerImplementor
 GenericBase class ile oluşturulan `ErrorLogger` yukarıdaki şekilde oluşturulabilir ve böylece aşağıdaki gibi kullanım sağlanabilir.
 
 ```
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Bridge;
 
 internal class Program
@@ -191,15 +200,89 @@ internal class Program
                                     .AddScoped<FileLog>()
                                     .BuildServiceProvider();
 
-        var consoleLoggerGeneric = new ErrorLogger<FileLog>(serviceProvider);
+        var consoleLoggerGeneric = new ErrorLogger<ConsoleLog>(serviceProvider);
         var fileLoggerGeneric = new ErrorLogger<FileLog>(serviceProvider);
         consoleLoggerGeneric.Log("console log entry generic");
         fileLoggerGeneric.Log("File log entry generic");
     }
 }
 ```
+# Generic Base Class Implementation 
+Bu kullanımı daha da base class'lar ile ilerletmek için öncelikle base bir Implementor interface oluşturulması gerekmektedir.
 
-Bu kullanım daha da iyileştirilebilir.
+```
+public interface IImplementor {}
+```
+
+Bu interface ile spesifik olarak oluşturulacak Implementor (örneğin ILoggerImplementor) interface'ler imzalanarak 
+aşağıda görülen base abstract class'a koşullandırılacaktır.
+
+```
+public abstract class BaseAbstractor<TImplementor> where TImplementor : IImplementor
+{
+    protected TImplementor _implementor;
+
+    public BaseAbstractor(IServiceProvider serviceProvider)
+    {
+        _implementor = (TImplementor)serviceProvider.GetService(typeof(TImplementor));
+    }
+}
+```
+
+Bu abstract class'ı implemente edecek olan her Abstraction class artık içerisinde sadece abstract methodlarını bulunacaktır. 
+Böylece her abstraction class'da olacak olan `_implementor` field doldurma işlemi base class'da halledilecek ve kod tekrarından
+kaçınılmış olup, projedeki bütün abstraction ve implementorların reflection ile yakalanabilmesi daha basit hale indirgenmiştir.
+
+Log işlemleri için spesifik olarak oluşturulacak abstraction class aşağıdaki gibidir:
+
+```
+public abstract class LoggerAbstractionFromBase<TImplementor> : BaseAbstractor<TImplementor> where TImplementor : ILoggerImplementor
+{
+    protected LoggerAbstractionFromBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
+
+    abstract public void Log(string message);
+}
+```
+
+Görüldüğü üzere artık sadece ilgili abstraction'un abstract methodları bulunuyor ancak dikkat edilmesi gerek yer TImplementor
+Generic parametresi ``ILoggerImplementor`` interface'ini implemente ediyor ve bir önceki yapılan implementasyona ek olarak
+`ILoggerImplementor` base class'a gönderilebilmesi için aşağıdaki gibi `IImplementor`'dan türemesi gerekmektedir.
+
+```
+public interface ILoggerImplementor : IImplementor
+{
+    void WriteLog(string message);
+}
+```
+
+Abstraction'un son implementasyonunda ise herhangi bir değişiklik yapılmasına gerek kalmamaktadır:
+
+```
+public class ErrorLoggerFromBase<T> : LoggerAbstractionFromBase<T> where T : ILoggerImplementor
+{
+    public ErrorLoggerFromBase(IServiceProvider serviceProvider) : base(serviceProvider)
+    {
+    }
+
+    public override void Log(string message)
+    {
+        _implementor.WriteLog($"Error From Base: {message}");
+    }
+}
+```
+
+Bunun program.cs de test edilmesi için gereken kod parçacığı aşağıdaki gibidir.
+
+```
+ServiceProvider serviceProvider = new ServiceCollection()
+                            .AddScoped<FileLog>()
+                            .BuildServiceProvider();
+
+var fileLoggerFromBase = new ErrorLoggerFromBase<FileLog>(serviceProvider);
+fileLoggerFromBase.Log("File log entry generic and from base");
+```
 
 # Kaynakça
 
