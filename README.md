@@ -9,7 +9,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
 
 1. Behavioral Patterns
     - Strategy
-    - Observer
+    - [Observer](./src/behavioral/observer/Observer%20Pattern.md)
     - Command
     - Iterator
     - State
