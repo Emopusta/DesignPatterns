@@ -1,11 +1,12 @@
-**Genel Tanım**: Bir nesne, kendi içerisinde bir duruma (state) sahip olması ve bu state'deki değişikliklere bağlı olarak diğer nesnelere bildirecek bir mekanizmaya sahip olduğu için subject/publisher olarak adlandırılır. Bu nesnedeki state değişimi bu nesneyi dışarıdan izleyen (observe eden) nesnelere etki eder ve onlara haber verir, bu nesnelere ise observer/subscriber denir.   
+**Genel Tanım**: Bir nesne, kendi içerisinde bir state'e (durum) sahip olması ve bu state'de oluşan değişikliklere bağlı olarak diğer nesnelere bildirecek bir mekanizmaya sahip olmasına subject/publisher denir. Bu nesnedeki state değişimi bu nesneyi dışarıdan izleyen (observe eden) nesnelere etki eder ve onlara haber verir, bu nesnelere ise observer/subscriber denir.   
 
 > (Observer == Subscriber && Subject == Publisher) Ek olarak pub/sub şeklinde araştırılabilir. Pattern'in ismi ile anlatımın uyumlu olması için Observer ve Subject anahtar kelimeleri ile devam edilecektir.
 
 
-Observer pattern, subject classlara observe olunmasını ve ardından subject class'larda oluşturulacak bir event ile bütün observer'lara notification (bildirim) göndermesi ile tanımlanır. Observer class'lar bir subject içerisinde attach/subscribe veya detach/unsubscribe edilir.
+Observer pattern, subject classların bazı observer class'lar ile observe edilmesini ve buna bağlı olarak, subject class'larda oluşturulacak bir event ile bütün observer'lara notification (bildirim) göndermesi ile tanımlanır. Observer class'lar bir subject içerisinde attach/subscribe veya detach/unsubscribe edilir. Böylece Subscribe olan observer nesnesinin, subject state'inde meydana gelecek değişiklikleri izlediği anlaşılır ve Unsubscribe olan observer nesnesinin, subject state'inde gelecek değişiklikleri izlemediği anlaşılır.
 
-Örnek: Bir e-mail newsletter uygulamasına kayıt olan çeşitli kullanıcılar bulunmaktadır. Bu kullanıcıların her biri subject'e observe/attach veya daha sonrasında ignore/detach etmek isteyebilir. Ayrıca kullanıcılara gönderilecek her mail'in başında kullanıcının kendi isminin bulunmasını yani multi-tenant bir yapı kullanılması hedeflenmektedir.
+### Örnek Senaryo
+Bir newsletter (e-posta haber bülteni) uygulamasına çeşitli kullanıcılar kayıt olur. Bu kullanıcılar her biri subject'e observe/attach veya daha sonrasında ignore/detach edebilir. Ayrıca kullanıcılara gönderilecek her mail'in başında kullanıcının kendi isminin bulunmasını yani multi-tenant bir yapı kullanılması hedeflenmektedir.
 
 # Default Implementation
 
@@ -117,7 +118,7 @@ Hello Emopusta, Teşekkürler beni mailinizde unsubscribe yapmadığınız için
 
 Bu pattern kullanılarak bir çok ihtiyaç karşılanabilir ve nihai implementasyon yukarıdaki gibi değildir. İhtiyaçlara göre değişiklik gösterebilir. Örneğin her Notify işleminden sonra observer listesi temizlenebilir veya Yukarıdaki gibi sadece mail değil buna ek olarak bir de başka bir platformdan mesaj gönderimi yapılabilir... Böylece farklı ihtiyaçlara ekstra implementasyonlar yapılması gerekir. 
 
-Genel olarak özetlenmesi gerekirse Observer Pattern, observe edenlerin sürekli olarak bir nesneyi takip edip ona sürekli state değiştirdin mi diye sormadan (Poll), state değiştirdiği zaman bütün observer'ların subject tarafından notify edilmesi şeklinde çalışır (Push). 
+Genel olarak özetlenmesi gerekirse Observer Pattern, observe edenlerin sürekli olarak bir nesneyi izleyip ona sürekli state değiştirdin mi diye sormadan (Poll), state değiştirdiği zaman bütün observer'ların subject tarafından notify edilmesi şeklinde çalışır (Push). 
 
 # Kaynakça
 
