@@ -378,6 +378,8 @@ OrderId: 123, ProductName: Smart Phone, Address: Bursa, 16000
 OrderId: 101112, ProductName: Smart Phone, Address: Ankara, 16000
 ```
 
+<!-- EK2 Factory pattern ile nesne generator ama en başta factory içerisinde generate edilmiş instanceların clonelarını 
+dönerek yapılan bir implementasyon. (GOF kitabında var) -->
 
 
 
