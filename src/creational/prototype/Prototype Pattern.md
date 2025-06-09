@@ -1,5 +1,5 @@
 Bu bir creational pattern'dir. 
-Amaç: bir nesne oluşturulurken, bu nesnenin başka bir nesneden kopyalanarak oluşturulması. Böylece, tekrarlı kullanılacak aynı özelliklere sahip nesnelerin tekrar tekrar baştan initialize edilmemesi sağlanır.
+Amaç: bir nesne oluşturulurken, bu nesnenin başka bir nesneden kopyalanarak oluşturulmasını sağlamaktır.
 
 - [Shallow Copy](#shallow-copy)
 - [Deep Copy](#deep-copy)
