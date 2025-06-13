@@ -57,20 +57,20 @@ internal class Program
     private static void Main(string[] args)
     {
         #region Prototype Pattern ICloneable Example
-		var order1 = new CloneableOrder("123", "Laptop", new Address("Bursa", "16000"));
-		var order2 = (CloneableOrder)order1.Clone();
-		
-		Console.WriteLine("Before change:");
-		Console.WriteLine(order1);
-		Console.WriteLine(order2);
-		
-		order2.OrderId = "456"; 
-		order2.Address.City = "Istanbul";
-		order2.Address.ZipCode = "34000";
-		
-		Console.WriteLine("After change:");
-		Console.WriteLine(order1);
-		Console.WriteLine(order2);
+        var order1 = new Order("123", "Laptop", new Address("Bursa", "16000"));
+        var order2 = (Order)order1.Clone();
+
+        Console.WriteLine("Before change:");
+        Console.WriteLine(order1);
+        Console.WriteLine(order2);
+
+        order2.OrderId = "456";
+        order2.Address.City = "Istanbul";
+        order2.Address.ZipCode = "34000";
+
+        Console.WriteLine("After change:");
+        Console.WriteLine(order1);
+        Console.WriteLine(order2);
 		#endregion Prototype Pattern ICloneable Example
 	}
 }
