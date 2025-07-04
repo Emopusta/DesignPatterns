@@ -14,7 +14,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - Iterator
     - State
     - Memento
-    - Mediator
+    - [Mediator](./src/behavioral/mediator/Mediator%20Pattern.md)
     - Chain of Responsibility
     - Visitor
     - Interpreter
