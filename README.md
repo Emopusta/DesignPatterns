@@ -26,7 +26,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - [Prototype](./src/creational/prototype/Prototype%20Pattern.md)
 3. Structural Patterns
     - [Adapter](./src/structural/adapter/Adapter%20Pattern.md)
-    - Composite
+    - [Composite](./src/structural/composite/Composite%20Pattern.md)
     - Proxy
     - [Flyweight](./src/structural/flyweight/Flyweight%20Pattern.md)
     - Facade
