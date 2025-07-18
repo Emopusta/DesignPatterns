@@ -9,10 +9,11 @@
 # Giriş
 Composite pattern, nesneleri ağaç yapısı şeklinde organize ederek, ağaç yapısındaki alt-üst, yaprak-gövde ilişkisini kurmaya ve bu nesnelerin ortak bir şekilde işlem görebilmesine olanak sağlar. Ağaç yapısındaki her bir node(düğüm) ortak bir interface(arayüz)'e sahip olması gerekmektedir. 
 
-Avantajları: 
+**Avantajları:** 
 - kompleks ağaç yapılarını uygun bir şekilde kullanılabilmesiyle, polymorphism (çok biçimlilik) ve recursive (özyineleme) operasyonlar yapılabilmesini sağlar.
 - Open-Closed Principle'ına uyar. Yeni nesnelerin eklenmesi, uygulamada herhangi bir yerde kod değişikliğine sebebiyet vermeden yapılabilir.
-Dezavantajları:
+
+**Dezavantajları:**
 - Kompleks ve işlevsel olarak birbirinden çok zıt nesnelerin bulunduğu bir durumda, ortak işleri yapabilecek nesnelerin dolayısıyla aynı interface'i kullanacak nesnelerin tespit edilmesi zorlaşacaktır.
 
 Aşağıdaki görselde görüldüğü üzere genel bir ağaç yapısına benzetilen composite patternin görselleştirilmiş halidir. İki çeşit node'dan oluşan bu ağaçta leaf'ler (yaprak) ve composite'ler  bulunmaktadır. Leaf component'leri ağacın en altında bulunan kısımlara denir yani bu parçanın child'ı yoktur. Composite'ler ise aralarda bulunan yani child node'u bulunan node'lardır. Ayrıca Composite'ler alt yapraklarını hatta bazı durumlarda üst yapraklarını da kendi içerisinde saklaması gerekmektedir.
@@ -30,7 +31,7 @@ Component (interface):
 - Ortak arayüz
 
 ### Teorik Örnek
-![GoFAgac](./assets/GoFCompositePatternDiagram.png)
+![GoFAgac](./assets/GoFCompositePatternDiagram.png)<br>
 Görsel 1. GoF Composite Pattern Diagram
 
 Görsel 1'deki teorik diyagramı kod örneğiyle desteklemek gerekirse öncelikle ortak arayüzün oluşturulması gerekmektedir. `Name` fieldının eklenmesinin sebebi ise, örnek çıktı oluşturulması sırasında leafler arası ayırt etmeyi kolaylaştırmaktır.
@@ -108,7 +109,7 @@ public class Composite : IComponent
 
 Görsel 1'deki gibi bir yapı kurulup, Görsel 2'deki gibi isimlendirmeler ile desteklenerek test edilecek ve DFS (Depth First Search) mantığıyla print yapılacak olursa Bkz. Görsel 3.
 
-![TeorikAgac](./assets/IsimlendirilmisTeorikAgac.png)
+![TeorikAgac](./assets/IsimlendirilmisTeorikAgac.png)<br>
 Görsel 2. İsimlendirilmiş Teorik Ağaç (Yeşil:leaf, Kırmızı:composite)
 ```
 internal class Program
@@ -150,7 +151,7 @@ Pro named FirstLeaf Component Invoked!
 Semih named SecondLeaf Component Invoked!
 ```
 
-![OutputPathDFS](./assets/DiagramUzerindenCiktiYoluDFS.png)
+![OutputPathDFS](./assets/DiagramUzerindenCiktiYoluDFS.png)<br>
 Görsel 3. Diyagram Üzerinden Çıktı yolu (DFS)
 
 ### Kullanıldığı alanlar
