@@ -1,33 +1,46 @@
 # Composite Design Pattern
 # İçerik
 - [Giriş](#giriş)
-- [Teorik Örnek](#teorik-örnek)
 - [Kullanıldığı Alanlar](#kullanıldığı-alanlar)
+- [Avantajları](#avantajları)
+- [Dezavantajları](#dezavantajları)
+- [Bileşenler](#bileşenler)
+- [Teorik Örnek](#teorik-örnek)
 - [Kaynakça](#kaynakça)
 
 
 # Giriş
 Composite pattern, nesneleri ağaç yapısı şeklinde organize ederek, ağaç yapısındaki alt-üst, yaprak-gövde ilişkisini kurmaya ve bu nesnelerin ortak bir şekilde işlem görebilmesine olanak sağlar. Ağaç yapısındaki her bir node(düğüm) ortak bir interface(arayüz)'e sahip olması gerekmektedir. 
 
-**Avantajları:** 
+### Kullanıldığı alanlar
+
+Ağaç yapısına benzeyen bütün ortamlarda çeşitli varyasyonları kullanılmaktadır. Bunlar:
+- Neural Networks
+- HTML DOM elements
+- Organizasyon şemaları
+- Diyagram oluşturma uygulamaları (Birden çok componenti seçip kaydırmak gibi)
+
+### Avantajları
 - kompleks ağaç yapılarını uygun bir şekilde kullanılabilmesiyle, polymorphism (çok biçimlilik) ve recursive (özyineleme) operasyonlar yapılabilmesini sağlar.
 - Open-Closed Principle'ına uyar. Yeni nesnelerin eklenmesi, uygulamada herhangi bir yerde kod değişikliğine sebebiyet vermeden yapılabilir.
 
-**Dezavantajları:**
+### Dezavantajları
 - Kompleks ve işlevsel olarak birbirinden çok zıt nesnelerin bulunduğu bir durumda, ortak işleri yapabilecek nesnelerin dolayısıyla aynı interface'i kullanacak nesnelerin tespit edilmesi zorlaşacaktır.
 
 Görsel 1'de görüldüğü üzere genel bir ağaç yapısına benzetilen composite patternin görselleştirilmiş halidir. İki çeşit node'dan oluşan bu ağaçta leaf'ler (yaprak) ve composite'ler  bulunmaktadır. Leaf component'leri ağacın en altında bulunan kısımlara denir yani bu parçanın child'ı yoktur. Composite'ler ise aralarda bulunan yani child node'u bulunan node'lardır. Ayrıca Composite'ler alt yapraklarını hatta bazı durumlarda üst yapraklarını da kendi içerisinde saklaması gerekmektedir.
 
-Leaf:
+### Bileşenler
+
+**Leaf:**
 - Alt elemanı yoktur.
 - İşlemin yapılacağı son yerdir.
 
-Composite:
+**Composite:**
 - Alt elemanları vardır.
 - İşlemi alt elemanlara devreder.
 - İşlemin devri sırasında decorate tarzı ek işlemler yapabilir.
 
-Component (interface):
+**Component (interface):**
 - Ortak arayüz
 
 ### Teorik Örnek
@@ -153,14 +166,6 @@ Semih named SecondLeaf Component Invoked!
 
 ![OutputPathDFS](./assets/DiagramUzerindenCiktiYoluDFS.png)<br>
 Görsel 3. Diyagram Üzerinden Çıktı yolu (DFS)
-
-### Kullanıldığı alanlar
-
-Ağaç yapısına benzeyen bütün ortamlarda çeşitli varyasyonları kullanılmaktadır. Bunlar:
-- Neural Networks
-- HTML DOM elements
-- Organizasyon şemaları
-- Diyagram oluşturma uygulamaları (Birden çok componenti seçip kaydırmak gibi)
 
 # Kaynakça
 
