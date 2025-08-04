@@ -27,7 +27,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
 3. Structural Patterns
     - [Adapter](./src/structural/adapter/Adapter%20Pattern.md)
     - [Composite](./src/structural/composite/Composite%20Pattern.md)
-    - Proxy
+    - [Proxy](./src/structural/proxy/Proxy%20Pattern.md)
     - [Flyweight](./src/structural/flyweight/Flyweight%20Pattern.md)
     - Facade
     - [Bridge](./src/structural/bridge/Bridge%20Pattern.md)
