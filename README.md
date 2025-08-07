@@ -29,7 +29,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - [Composite](./src/structural/composite/Composite%20Pattern.md)
     - [Proxy](./src/structural/proxy/Proxy%20Pattern.md)
     - [Flyweight](./src/structural/flyweight/Flyweight%20Pattern.md)
-    - Facade
+    - [Facade](./src/structural/facade/Facade%20Pattern.md)
     - [Bridge](./src/structural/bridge/Bridge%20Pattern.md)
     - Decorator
 
