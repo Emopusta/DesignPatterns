@@ -31,7 +31,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - [Flyweight](./src/structural/flyweight/Flyweight%20Pattern.md)
     - [Facade](./src/structural/facade/Facade%20Pattern.md)
     - [Bridge](./src/structural/bridge/Bridge%20Pattern.md)
-    - Decorator
+    - [Decorator](./src/structural/decorator/Decorator%20Pattern.md)
 
 
 # Destek
