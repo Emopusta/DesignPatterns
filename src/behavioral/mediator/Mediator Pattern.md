@@ -16,7 +16,7 @@ Bu yazıda iki adet örnek üzerinden anlatım yapılacaktır
 Bu örnekte oluşturulan bir chat room class'ı mediator görevi görerek içerisine kaydolan `User`'ların mesajlarını birbirleri arasında iletimini veya bir `User` ın diğer bütün `User`'lara mesajı Broadcast (yayınlamak) yapmasını sağlıyor. Bu `ChatRoom` mediator sınıfı sayesinde kullanıcılar hiçbir şekilde birbirleriyle strictly coupled (sıkı bağlı) bir ilişki kurmadan mediator sınıfı üzerinden haberleşiyor.
 
 ChatRoom.cs
-```
+```csharp
 public class ChatRoom
 {
     private readonly Dictionary<string, User> _users = new();
@@ -58,7 +58,7 @@ public class ChatRoom
 Yukarıdaki `ChatRoom` mediator class'ında görüldüğü üzere `User`'ların saklandığı bir `Dictionary` veri tipi, `User`'ları bu property'ye kayıt eden `Register` methodu, `User`'lar arası özel mesaj ve tüm `User`'lara broadcast yapılmasını sağlayacak olan methodlar bulunmaktadır.
 
 User.cs
-```
+```csharp
 public class User
 {
     public string Name { get; }
@@ -100,7 +100,7 @@ Burada iyileştirmeler ve ek feature'lar eklenebilir. Örneğin ``Chat`` geçmi�
 Aşağıda program.cs dosyasında yapılan örnek case'de (durum), bir chatRoom oluşturulur ardından bu chatroom'a kayıt olacak kullanıcılar oluşturulur. Oluşturulan chatRoom'a bu kullanıcılar `Register` edilir. Ardından `User`lar kendileri arasında mesajlaşma yapar ve en sonda bir `User` broadcast yapar.
 
 Program.cs
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -141,7 +141,7 @@ Semih receives from Emopusta: Benim nickname'im çok iyidir.
 
 Bu örnekte bire-bir mesaj iletimi ile business logic'lerin API'lardan ayrılmasını sağlanacaktır. Aşağıda kullanılacak mediator class'ın sadece Send methodundan oluştuğunu ve içerisine gelen `Request` `Response` çiftiyle `Handler` class'ının aranıp bulunması ve içerisinde default bulunan Handle methodunun gerekli parametreler ile çalıştırılmasını sağlamaktadır.
 
-```
+```csharp
 public interface IMediator
 {
     TResponse Send<TResponse>(IRequest<TResponse> request);
@@ -166,7 +166,7 @@ public class APIBusinessMediator : IMediator
 
 Aşağıda oluşturulup mediator ile arabuluculuğun sağlanacağı sınıfların interfaceleri implement edilmiştir. Handle methodu mediator içerisinde static tanımlandığından kaynaklı interface ile ekstra kural ile sınırlandırılmıştır. 
 
-```
+```csharp
 public interface IRequest<out TResponse>
 {
 }
@@ -178,7 +178,7 @@ public interface IRequestHandler<in TRequest, TResponse>
 }
 ```
 
-```
+```csharp
 public class CreateProductCommand : IRequest<CreateProductResponse>
 {
     public string Name { get; set; }
@@ -206,7 +206,7 @@ Oluşturulacak mesajın içerisindeki argument'lar ile `Handle` sonucunda dönü
 
 Ardından mesajın gönderileceği handler sınıfı aşağıdaki gibi oluşturulmuştur.
 
-```
+```csharp
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, CreateProductResponse>
 {
     private readonly IMediator _mediator;
@@ -226,7 +226,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
 Gerçekçi bir ortam kurulması için container oluşturularak Dependency Injection implemente edilmiştir.
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)

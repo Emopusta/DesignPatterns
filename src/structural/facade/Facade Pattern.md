@@ -4,7 +4,7 @@ Facade Design Pattern, karmaşık işlemlerin, implementasyonların, işlevlerin
 
 Facade'ın en basit örneği bir console uygulamasında tek satır kod ile arayüzde mesaj gösterilmesini sağlayan aşağıdaki örnek kod bloğu.
 
-```
+```csharp
 internal class Program
 {
 	private static void Main(string[] args)

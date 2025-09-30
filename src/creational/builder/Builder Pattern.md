@@ -17,7 +17,7 @@ Builder pattern kendi içerisinde farklı farklı implementasyonlara ayrılmakta
 Fluent Builder, bir builder class'ın fonksiyonunun kendi type'ını (tip) return (döndürmek) ederek farklı satırların yanı sıra aynı satırda üst üste işlemler yapılabilmesini sağlar.
 
 örnek:
-```
+```csharp
 public class Product
 {
     public string Name { get; set; }
@@ -31,7 +31,7 @@ public class Product
 }
 ```
 Yukarıda oluşturulan Product sınıfımızı öncelikle klasik Builder Pattern ile oluşturalım.
-```
+```csharp
 public class ProductBuilder
 {
     private readonly Product _product = new Product();
@@ -55,7 +55,7 @@ public class ProductBuilder
 ```
 Görüldüğü üzere, `ProductBuilder` class'ı çeşitli fonksiyonlar ile içerisinde oluşturulan `Product` nesnesinin property'lerinin doldurulmasına yardımcı oluyor. Buralardaki amaç çeşitli koşullar veya validation'lar eklenerek oluşturulmayı sınırlandırmak ve en sonunda `Build()` fonksiyonu ile yine ihtiyaca bağlı olarak çeşitli koşullar ile `Product` nesnesinin oluşturulmasını sağlıyor.
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -73,7 +73,7 @@ internal class Program
 
 `FluentBuilder` ise bahsedildiği gibi yukarıdaki her bir method çağırımında farklı satırlarda builder değişkeni ile çağırılmasına ihtiyaç kalmadan tek satırda üst üste kullanılabilmektedir.
 
-```
+```csharp
 public class ProductFluentBuilder
 {
     private readonly Product _product = new Product();
@@ -98,7 +98,7 @@ public class ProductFluentBuilder
     }
 }
 ```
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -124,7 +124,7 @@ Inheritance ile oluşturulan builderlar'da karşılaşılan sıkıntı ise `chil
 
 Aşağıdaki örnekte görüldüğü üzere en tepede bulunan ve ``Build()`` işlemini yapan `ProductBuilder` class'ının altında birbirinden türeyen sırasıyla Name, Description ve Price için ayrı Builder class'lar oluşturulmuş ve inheritence uygulanmıştır. 
 
-```
+```csharp
 public abstract class ProductBuilderBase
 {
     protected readonly Product _product = new Product();
@@ -164,7 +164,7 @@ public class ProductPriceBuilder : ProductDescriptionBuilder
 
 Bu sınıfların kullanımı aşağıdaki gibi olduğu durumlarda hata alınan kısımlar `Hata verir` yorum satırıyla belirtilmiştir. Bu satırlarda hata alınmasının sebebi ilk `product` build edilmesi anında `.WithName("Laptop")` fonksiyonunun çağırılması sonucunda `builder.WithName("Laptop")` işleminin tipi `ProductBuilder` olarak değişti ve bundan kaynaklı olarak bütün child class'lardaki fonksiyonlara erişimi iptal oldu. Aynı durum `product2` için de geçerlidir ancak onda ikinici işlemde hata vermesinin sebebi ise `.WithDescription("Dell Laptop")` ile işlemin tipi `ProductDescriptionBuilder`'a dönüştü ancak ``ProductNameBuilder`` bu class'ın parent'ı olduğu için `WithName` fonksiyonuna erişebildi ancak `WithPrice` fonksiyonu `child` olduğu için için erişmek mümkün olamadı.
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -185,7 +185,7 @@ internal class Program
 
 Bu duruma çözüm olarak ``Recursive Generic`` tekniği kullanarak en üstteki base build class hariç herhangi bir fonksiyon kullanılsa bile en dipteki child class'a göre bir return yaptığı için bütün fonksiyonlar kullanılabilmektedir. En tepedeki base build class'ın bu durumu karşılamamasının sebebi ise `Build()` operasyonunun bulunduğu sınıf olması yani `Build()` edildikten sonra çıktımızın bir builder class değil build ettiğimiz nesne olarak çıkması beklenmektedir.
 
-```
+```csharp
 public class ProductNameBuilder<T> : ProductBuilderBase where T : ProductNameBuilder<T>
 {
     public T WithName(string name)
@@ -218,7 +218,7 @@ public class ProductPriceBuilder<T> : ProductDescriptionBuilder<ProductPriceBuil
 
 Bu dönüşümden sonra çok temiz olmayan bir çözüm ile Product class içerisinde bir değişikliğe gidilmesi gerekmektedir.
 
-```
+```csharp
 public class Product
 {
     public string Name { get; set; }
@@ -239,7 +239,7 @@ public class Product
 
 Burada ``inner`` bir class oluşturuldu ve ``Product`` içerisine ``static`` bir şekilde erişilebilmesi için bir property oluşturuldu.
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -275,7 +275,7 @@ InheritedBuilder.Product+Builder
 
 Inner Class kullanımı, çeşitli prensiplerin göz ardı edilmesi ve code smell'e sebebiyet vermektedir. Bundan kaynaklı, farklı bir yöntem olarak aşağıdaki gibi InheritedBuilder class'ların en child'ından inherit alan bir Builder class oluşturup onu kullanarak ``Product`` Build etme işlemi yapılabilmektedir.
 
-```
+```csharp
 public class ProductBuilder : ProductPriceBuilder<ProductBuilder>
 {
     public ProductBuilder() {}
@@ -283,7 +283,7 @@ public class ProductBuilder : ProductPriceBuilder<ProductBuilder>
 ```
 
 ve ardından şu şekilde product oluşturulabilir:
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -306,7 +306,7 @@ Bir diğer Builder çeşidi ise ``StepwiseBuilder``. Buradaki build işleminin y
 
 Aşağıdaki örnekte, eski ``Product`` class'a ek olarak `ProductType` enum eklendi ve ilerleyen süreçte bu enum ile şartlandırılacaktır.
 
-```
+```csharp
 public class Product
 {
     public string Name { get; set; }
@@ -330,7 +330,7 @@ public enum ProductType
 
 Builder Pattern'e stepwise şekilde adım adım, developer'ı sınırlandıracak şekilde ayarlayabilmemiz için koşullu bir yapı da oluşturabiliriz ancak burada interface'lerden yararlanacağız.
 
-```
+```csharp
 public interface ISpecifyName
 {
     public ISpecifyProductType WithNameAndDescription(string name,string description);
@@ -355,7 +355,7 @@ Yukarıdaki kod bloğundan anlaşılacağı üzere her işlemi ayrı ayrı inter
 
 Aşağıda ise anlatılanların implementasyonu bulunmaktadır.
 
-```
+```csharp
 public class ProductBuilder
 {
     public ISpecifyName Create()
@@ -403,7 +403,7 @@ public class ProductBuilder
 
 Yukarıda bir inner class kullanılarak implementasyonun yapıldığını görülmektedir. Bunun sebebi eğer `WithNameAndDescription`, `OfType`, `WithPrice`, `Build` fonksiyonlarının herhangi bir yerden erişilememesi gerekmektedir, eğer erişilebilirse StepwiseBuilder pattern'in sıralı bir şekilde build etme özelliği geçersiz olmaktadır. Böylece üstteki kod bloğunda, class'ın içerisine sadece bu inner class'ı oluşturacak kısmı public verdikten sonra işlem istenildiği gibi sıralı ve kurallı bir hal almaktadır ve aşağıdaki şekilde kullanılabilmektedir.
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -422,7 +422,7 @@ internal class Program
 
 Ancak bu şekilde Builder class oluşturmak fark edildiği üzere ekstra bir `InnerBuildImplementation` class'ına ihtiyaç doğurmaktadır ve ne kadar temiz bir implementasyon olduğu tartışılır. Bunun yerine :
 
-```
+```csharp
 public class Product
 {
     public string Name { get; set; }
@@ -475,7 +475,7 @@ public class Product
 ```
 Product sınıfımızın içerisine tekrar inner bir şekilde Builder class oluşturarak ve buna ek olarak Product sınıfımızı `new` anahtar kelimesi ile oluşturulmasını da private constructor ile sağlayarak sadece ilgili Builder static property'si ile erişilebilen bir Product nesnesi oluşturma şartı koyulabilmektedir. Tekrardan çok temiz bir yaklaşım değil ancak önceki yaklaşıma göre hem ekstra bir class implemente edilmiyor hem de ilgili nesnenin oluşturulması bu yöntem ile sınırlandırılabilmektedir (Herhangi bir yerde `new` ile initialize edilebilmemesi sağlanır).
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -499,7 +499,7 @@ Böylece yukarıdaki şekilde eski haline göre hem daha fazla özelliğe sahip 
 
 FunctionalBuilder aslında çok dinamik bir yapı ve actionlar kullanılarak yapıldığı için base bir class oluşturup bundan türeyen spesifik Builder class'lar ile devam ediyoruz.
 
-```
+```csharp
 public abstract class FunctionalBuilder<TObject, TBuilder>
     where TBuilder : FunctionalBuilder<TObject, TBuilder>
     where TObject : new()
@@ -523,7 +523,7 @@ public abstract class FunctionalBuilder<TObject, TBuilder>
 
 Yukarıdaki kodda, abstract generic bir base class bulunmaktadır. Generic parametreler, `TObject` Build edilecek class'ın tipi ve TBuilder ise FluentBuilder gibi çalışması için fonksiyonelite eklettirilecek methodun dönüş tipi olacak olan Builder class'ın tipidir. Class içerisinde `With` fonksiyonu ile eklenecek olan `action`'ların listesi ve en sonunda `Build()` operasyonu içinde listede tutulan bütün `action`'ların teker teker ilgili nesneye uygulanması sağlanır.
 
-```
+```csharp
 public class ProductBuilder : FunctionalBuilder<Product, ProductBuilder>
 {
     public ProductBuilder WithName(string name)
@@ -535,7 +535,7 @@ public class ProductBuilder : FunctionalBuilder<Product, ProductBuilder>
 
 Yukarıdaki kullanımda ise eğer bu aşırı dinamik yapı sınırlandırılmak istenilirse spesifik fonksiyonlar eklenebilir ve hatta `With` methodu `protected` `access modifier` ile sınırlandırılırsa `With` methodunu sadece ``FunctionalBuilder`` class'ını inherit eden Builder class'lar kullanabilecek hale gelecektir.
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)

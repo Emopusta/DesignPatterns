@@ -10,7 +10,7 @@ Bir newsletter (e-posta haber bülteni) uygulamasına çeşitli kullanıcılar k
 
 # Default Implementation
 
-```
+```csharp
 public interface IObserver
 {
     void Update(string message);
@@ -26,7 +26,7 @@ public interface ISubject
 
 Observer class'ların ve Subject class'ların implement edeceği interfaceler yukarıdaki gibidir. `IObserver` içerisindeki Update methodu, ISubject içerisindeki Notify methodu ile Subject'e Attach/Subscribe olmuş bütün observer'larda tetiklenecek olan methoddur. `ISubject` içerisindeki Attach ve Detach methodları observer'ları kendi içerisinde saklama ve silme işlemlerini gerçekleştirecek olup Notify methodu ise kayıtlı tüm observerların update methodunu triggerlamak için implemente edilecektir.
 
-```
+```csharp
 public class MailSendingSubject : ISubject
 {
     private HashSet<IObserver> _observers = new HashSet<IObserver>();
@@ -63,7 +63,7 @@ Yukarıda bahsedildiği gibi implementasyon gerçekleştirilmiştir. Ek olarak `
 
 İçine gönderilecek mesajın bütün bu Subjecte bağlı olanlarda aynı olacağı düşünülerek aşağıdaki gibi sadece  `name` kısmı observera bağlı olacak şekilde oluşturulmuştur.
 
-```
+```csharp
 public class MailSenderObserver : IObserver
 {
     private string _name;
@@ -80,7 +80,7 @@ public class MailSenderObserver : IObserver
 
 Yukarıdaki implementasyonların konsol uygulamasında örneği:
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)

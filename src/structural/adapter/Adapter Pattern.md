@@ -16,7 +16,7 @@ Bu yazıda, Adapter Pattern iki örnek üzerinden anlatılacaktır.
 
 Yukarıdaki görsel üzerinden implementasyon yapılacak olursa `Target` interface'i aşağıdaki gibi implemente edilir.
 
-```
+```csharp
 public interface ITarget
 {
     void Request<T>();
@@ -25,7 +25,7 @@ public interface ITarget
 
 Bu interface, custom uygulamada yapılacak işlemleri kullanma biçimi olarak tanımlanmaktadır. Bu biçim `Adaptee` class'ında bulunmadığından kaynaklı custom uygulama ile `Adaptee` class'ının uyumsuz olduğu buradan anlaşılmaktadır.
 
-```
+```csharp
 public class Adaptee
 {
     public void SpecificRequest(string name)
@@ -37,7 +37,7 @@ public class Adaptee
 
 `Adaptee` class'ı ilgili implementasyonda string bir argument almaktadır ancak custom uygulamada sadece generic bir fonksiyon bulunmaktadır. Bu iki sistemi birbirine bağlayabilmek için bir `Adapter` class yazıp içeride custom uygulamaya uygun bir implementasyon yapılarak aralarındaki uyumsuzluk giderilmektedir.
 
-```
+```csharp
 public class Adapter : ITarget
 {
     private readonly Adaptee _adaptee;
@@ -55,7 +55,7 @@ public class Adapter : ITarget
 ```
 
 program.cs
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -80,7 +80,7 @@ CAP kütüphanesi, AMQP protocolü kullanarak outbox pattern ile implemente edil
 
 Bunun için öncelikle `ITarget` görevi görecek olan `ICapTarget` interface'i implemente edildi.
 
-```
+```csharp
 public interface ICapTarget
     {
         Task PublishAsync<T>(T message, CancellationToken cancellationToken) where T : MessageBase;
@@ -89,11 +89,11 @@ public interface ICapTarget
 
 Bu interface publish işlemlerinde kullanılacak argument'ın generic parameter olarak alınması gerektiğini ve bu parametrenin `MessageBase` class'ından türemesi gerektiğini ifade etmektedir.
 
-```
+```csharp
 public class MessageBase { }
 ```
 
-```
+```csharp
 public class CapAdapter : ICapTarget
 {
     private readonly ICapPublisher _capPublisher;

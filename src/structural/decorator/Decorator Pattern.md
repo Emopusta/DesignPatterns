@@ -28,7 +28,7 @@ Decorator Pattern, bir nesnenin içeriğini değiştirmeden ona ek davranışlar
 
 Öncelikle Component interface'i ve ConcreteComponent class'ının implementasyonu gerçekleştirildi.
 
-```
+```csharp
 public interface IComponent
 {
     string Operation();
@@ -45,7 +45,7 @@ public class ConcreteComponent : IComponent
 
 Ardından `Decorator` abstract class oluşturuldu ve hem `IComponent` interface'inden türetildi hem de `HasA` bağlantısı ile `IComponent` ile imzalanmış bir class bulundurduğu implemente edildi.
 
-```
+```csharp
 public abstract class Decorator : IComponent
 {
     protected IComponent _component;
@@ -64,7 +64,7 @@ Bu `Decorator` abstract class'ını implemente edecek olan `ConcreteDecorator`'l
 
 Aşağıdaki implementasyonda görüldüğü üzere `ConcreteDecoratorA` class'ı bir boolean state (durum) belirtiyor ve state'e bağlı olarak yaptığı işlem değişiyor.
 
-```
+```csharp
 public class ConcreteDecoratorA : Decorator
 {
     private bool _addedState = false;
@@ -91,7 +91,7 @@ public class ConcreteDecoratorA : Decorator
 
 Ek olarak ise `ConcreteDecoratorB` class'ıyla ayrı bir özellik eklenmiş olup, çıktıyı ona göre güncellemektedir.
 
-```
+```csharp
 public class ConcreteDecoratorB : Decorator
 {
     public ConcreteDecoratorB(IComponent component) : base(component)
@@ -112,7 +112,7 @@ public class ConcreteDecoratorB : Decorator
 
 Yukarıdaki implementasyonların çeşitli kullanımlarını test etmek için:
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -153,7 +153,7 @@ ConcreteDecoratorA: Added State (ConcreteDecoratorB: Additional Behavior (Concre
 
 Örneğin kullanıcı girişlerini sağlayan bir `AuthService` class'ının içerisinde `Login()` methodu çalıştığında, kullanıcının bilgilerinin ve giriş yaptığı saati loglanması istenmektedir.
 
-```
+```csharp
 public interface IAuthService
 {
     void Login(string username, string password);
@@ -169,7 +169,7 @@ public class AuthService : IAuthService
 ```
 
 İlgili servisin `Login` methodunu decorate edebilmek için abstract Decorator class'ı implemente edildi.
-```
+```csharp
 public abstract class AuthServiceDecorator : IAuthService
 {
     private readonly IAuthService _authService;
@@ -186,7 +186,7 @@ public abstract class AuthServiceDecorator : IAuthService
 
 Ardından bu `Decorator` class'ının altında concrete ve loglama isterini karşılayacak olan `LoggingConcreteDecorator` implementasyonu ile istenilen loglar service içerisinde yapılacak işlemlerin çevresine yerleştirilir.
 
-```
+```csharp
 public class LoggingConcreteDecorator : AuthServiceDecorator
 {
     public LoggingConcreteDecorator(IAuthService authService) : base(authService) { }
@@ -201,7 +201,7 @@ public class LoggingConcreteDecorator : AuthServiceDecorator
 
 Ardından aşağıdaki gibi kullanım örnekleri test edildiğinde:
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)

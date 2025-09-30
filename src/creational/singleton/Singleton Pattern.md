@@ -6,7 +6,7 @@ Genelde loglama servislerinde, factory (fabrika) class'larda, uygulamaların her
 
 Aşağıdaki kod parçasında görüldüğü üzere static ve uygulama ayağa kalktığı gibi oluşturulan eager bir singleton loglama class'ı görülmektedir. Eager Initialization diye nitelendirilmesinin sebebi uygulama ayağa kalktığı gibi bu servisin instance'ı oluşturulup değişkene atanmaktadır. Bu koddan anlaşıldığı üzere SingletonLoggingService sadece bir kere `instantiate` (oluşturulmak) edilmekle birlikte sadece o instance'ın döndürülmesi sağlanmaktadır. Koşul içerisinde ise daha güvenli olsun diye bir koşul konmuş ve böylece `_instance`'ın oluşturulmama ihtimali ortadan kalkmaktadır.
 
-```
+```csharp
 public class SingletonLoggingService
 {
 
@@ -30,7 +30,7 @@ public class SingletonLoggingService
 
 Tahmin edilebileceği üzere, singleton pattern ile oluşturulmuş bir class'a multi-thread bir uygulamada aynı anda farklı thread'lerden erişilmeye çalışılırsa sıkıntılı sonuçlar elde edilebilmektedir. Buna çözüm olarak thread-safe implementasyonlar yapılması gerekmektedir. Buna çözüm olarak lock kullanabiliriz.
 
-```
+```csharp
 public sealed class ThreadSafeLoggingService
 {
 
@@ -62,7 +62,7 @@ public sealed class ThreadSafeLoggingService
 
 Görüldüğü üzere yukarıdaki kod parçası ilgili servis ne zaman çağırılırsa o zaman initialize edilmekle birlikte lock ile kullanımda olduğu zamanlarda thread safe halini almakta. Bu şekilde kullanım sağlandığı zaman initialize edilmesine Lazy initialization denir ve Lazy\<T> kullanarak da implemente edilebilir. `get` bloğunu tamamen lock'a alabilirdik ancak `_instance` yaratılmış ise direkt bunu dönerek ve bu bloğu lock'a almayarak performans sağlamaktayız çünkü lock pahalı bir mekanizmadır. Eğer her return işleminde lock içerisine almamamız thread-safe çalışmasını engelleyeceğini düşünüyorsanız yanılıyorsunuz. Bir kere lock içerisinde instance oluşturmak onu zaten thread-safe yapacağı için tekrar tekrar bu şekilde return etmemize gerek bulunmamaktadır. Bu yöntem `double check locking` ismiyle nitelendirilmektedir. Ek olarak class'ı deklare ederken sealed anahtar kelimesini kullandık. Bunun sayesinde bu class herhangi bir class'a inherit (miras almak) yapamaz. Bunu yapma sebebimiz aslında ek bir koruma. Normal şartlar altında constructor private olduğundan kaynaklı inheritence (miras)(kalıtım) yapıldığı zaman hata verecek ancak inner (iç) class şeklinde oluşturulursa hata vermeyecek ve o oluşturulan inner class' da kendine ait base class yani singleton class'ımızdan instantiate edilmiş bir instance'ı olacak ve singleton class'ımız singleton'lıktan çıkacak. 
 
-```
+```csharp
 public class ThreadSafeLoggingService
 {
     public int counter = 0;
@@ -98,7 +98,7 @@ public class ThreadSafeLoggingService
 }
 ```
 Yukarıdaki kod parçacığında bahsedilen problemi görebilirsiniz. Program içerisinde bunu test etmek için ise counter değerini kullanabiliriz.
-```
+```csharp
 static void Main(string[] args)
 {
     var x = new DerivedSingletonClass();
@@ -112,7 +112,7 @@ static void Main(string[] args)
 Yukarıdaki denemede çıktı olarak `DerivedSingletonClass`'ın counter'ı 11 olacak ve `SingletonLoggingService`'in `counter`'ı ise 21 olacak ancak ikisi de `SingletonLoggingService`'in constructor'unu kullandıkları için singleton olma kuralını çiğniyor ve uygulamamızda bize sıkıntı çıkarabilme potansiyeline sahip bir hal almış oluyor.
 
 `Lazy<\T>` kullanarak yapılan implementasyonuna bir örnek:
-```
+```csharp
 public sealed class ThreadSafeLoggingService
 {
     private static readonly Lazy<ThreadSafeLoggingService> _instance = new Lazy<ThreadSafeLoggingService>();
@@ -138,7 +138,7 @@ Yukarıdaki şekilde yapılan static implementasyon güzel bir şekilde çalış
 
 Örnek:
 
-```
+```csharp
 public interface IMySingleton
 {
     string GetSingletonName(string name);
@@ -157,7 +157,7 @@ Yukarıdaki örnekte IMySingleton interface'inden türemiş bir MySingleton conc
 
 Aşağıdaki kod parçacığında ise yukarıda oluşturduğumuz sınıfımızın Dependency Injection ile kullanımını görmekteyiz:
 
-```
+```csharp
 public class Something
 {
     private readonly IMySingleton _mySingleton;
@@ -176,7 +176,7 @@ public class Something
 
 Eğer bu kodu bir konsol uygulamasında çalıştırmak istersek aşağıdaki örnek ile bunu başarabiliriz:
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -192,7 +192,7 @@ internal class Program
 ```
 
 Bu işlemlerin bize en büyük faydası, artık unit test yazımı çok daha basit bir hale geldi. 
-```
+```csharp
 public class Test
 {
     [Fact]

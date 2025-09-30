@@ -11,8 +11,7 @@ Bridge Pattern, bir implementasyonu iki soyut class'a ayırarak hem implementasy
 
 Örnek: ErrorConsoleLogger isimli uygulamadaki oluşan hataları loglayan bir class ve bu class logları konsola yazmaktadır:
 
-```
-
+```csharp
 public class ErrorConsoleLogger
 {
     public void Log(string message)
@@ -47,7 +46,7 @@ Bahsedilen kod tekrarları ve bağımlılıkların source code'dan arındırılm
 Yukarıdaki Logger örneğinden yola çıkarak `Error`, `Info`, `Debug` class'ları developerın kullanacağı servis görevi görecek class'lar yani Abstraction'un uygulanması gereken class'lar ve bu abstraction ile imzalanan class'lar ise ConcreteAbstract olarak tanımlanacaktır. Bu class'ların içerisinde loglama işlemlerinin hangi tipte (ör. Console) olacağına karar verecek olan implementor class'lar olarak tanımlanmaktadır.
 
 LoggerAbstraction.cs
-```
+```csharp
 public abstract class LoggerAbstraction
 {
     protected ILoggerImplementor _implementor;
@@ -62,7 +61,7 @@ public abstract class LoggerAbstraction
 ```
 
 ILoggerImplementor.cs
-```
+```csharp
 public interface ILoggerImplementor
 {
     void WriteLog(string message);
@@ -74,7 +73,7 @@ Yukarıdaki kodlardan görüldüğü üzere Implementor interface'inden imzalana
 `Abstraction` ve `Implementor`'ler ayrıldığına ve base abstract class ve interface şeklinde yazıldığına göre tipler ve servisler implemente edilebilir.
 
 ErrorLogger.cs
-```
+```csharp
 public class ErrorLogger : LoggerAbstraction
 {
     public ErrorLogger(ILoggerImplementor implementor) : base(implementor) { }
@@ -89,7 +88,7 @@ public class ErrorLogger : LoggerAbstraction
 Constructor'da parent'ına implementoru gönderdi. Implementor class'ı base abstract içerisinde setlendi ve böylece ``Log`` methodu içerisinde \_implementor olarak çağırılıp setlenen implementor class'a göre Error message basılacaktır.
 
 ConsoleLog.cs
-```
+```csharp
 public class ConsoleLog : ILoggerImplementor       
 {
     public void WriteLog(string message)
@@ -102,7 +101,7 @@ public class ConsoleLog : ILoggerImplementor
 ConsoleLog implementor'u verildiğinde yapılacak işlem.
 
 FileLog.cs
-```
+```csharp
 public class FileLog : ILoggerImplementor
 {
     public void WriteLog(string message)
@@ -116,7 +115,7 @@ FileLog implementor'u verildiğinde yapılacak işlem.
 
 Bunların kullanım örnekleri ise örnek konsol uygulamasında aşağıdaki gibi gösterilmektedir:
 
-```
+```csharp
 namespace Bridge;
 
 internal class Program
@@ -149,7 +148,7 @@ Bu ConcreteAbstract class'ları generic bir yapıyla daha temiz bir şekilde ser
 Aşağıdaki implementasyon bu ihtiyacı karşılamaktadır.
 
 LoggerAbstraction.cs
-```
+```csharp
 public abstract class LoggerAbstraction<T> where T : ILoggerImplementor
 {
     protected ILoggerImplementor _implementor;
@@ -164,13 +163,13 @@ public abstract class LoggerAbstraction<T> where T : ILoggerImplementor
 ```
 Burada test edilebilmesi örneğinin konsol uygulamasında canlandırılabilmesi için ServiceProvider ile implementasyonu gözlenmektedir. Buna ek olarak aynı implementasyonu Activator ile nesne oluşturularak da yapılabilir:
 
-```
+```csharp
 _implementor = (ILoggerImplementor)Activator.CreateInstance(typeof(T));
 ```
 
 
 ErrorLogger.cs
-```
+```csharp
 public class ErrorLogger<T> : LoggerAbstraction<T> where T : ILoggerImplementor
 {
     public ErrorLogger(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -186,7 +185,7 @@ public class ErrorLogger<T> : LoggerAbstraction<T> where T : ILoggerImplementor
 
 GenericBase class ile oluşturulan `ErrorLogger` yukarıdaki şekilde oluşturulabilir ve böylece aşağıdaki gibi kullanım sağlanabilir.
 
-```
+```csharp
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bridge;
@@ -210,14 +209,14 @@ internal class Program
 # Generic Base Class Implementation 
 Bu kullanımı daha da base class'lar ile ilerletmek için öncelikle base bir Implementor interface oluşturulması gerekmektedir.
 
-```
+```csharp
 public interface IImplementor {}
 ```
 
 Bu interface ile spesifik olarak oluşturulacak Implementor (örneğin ILoggerImplementor) interface'ler imzalanarak 
 aşağıda görülen base abstract class'a koşullandırılacaktır.
 
-```
+```csharp
 public abstract class BaseAbstractor<TImplementor> where TImplementor : IImplementor
 {
     protected TImplementor _implementor;
@@ -235,7 +234,7 @@ kaçınılmış olup, projedeki bütün abstraction ve implementorların reflect
 
 Log işlemleri için spesifik olarak oluşturulacak abstraction class aşağıdaki gibidir:
 
-```
+```csharp
 public abstract class LoggerAbstractionFromBase<TImplementor> : BaseAbstractor<TImplementor> where TImplementor : ILoggerImplementor
 {
     protected LoggerAbstractionFromBase(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -250,7 +249,7 @@ Görüldüğü üzere artık sadece ilgili abstraction'un abstract methodları b
 Generic parametresi ``ILoggerImplementor`` interface'ini implemente ediyor ve bir önceki yapılan implementasyona ek olarak
 `ILoggerImplementor` base class'a gönderilebilmesi için aşağıdaki gibi `IImplementor`'dan türemesi gerekmektedir.
 
-```
+```csharp
 public interface ILoggerImplementor : IImplementor
 {
     void WriteLog(string message);
@@ -259,7 +258,7 @@ public interface ILoggerImplementor : IImplementor
 
 Abstraction'un son implementasyonunda ise herhangi bir değişiklik yapılmasına gerek kalmamaktadır:
 
-```
+```csharp
 public class ErrorLoggerFromBase<T> : LoggerAbstractionFromBase<T> where T : ILoggerImplementor
 {
     public ErrorLoggerFromBase(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -275,7 +274,7 @@ public class ErrorLoggerFromBase<T> : LoggerAbstractionFromBase<T> where T : ILo
 
 Bunun program.cs de test edilmesi için gereken kod parçacığı aşağıdaki gibidir.
 
-```
+```csharp
 ServiceProvider serviceProvider = new ServiceCollection()
                             .AddScoped<FileLog>()
                             .BuildServiceProvider();

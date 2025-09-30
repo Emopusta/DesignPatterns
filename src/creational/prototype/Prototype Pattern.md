@@ -12,7 +12,7 @@ Amaç: bir nesne oluşturulurken, bu nesnenin başka bir nesneden kopyalanarak o
 
 Aşağıda .Net ile gelen ICloneable interface'ini implemente eden bir Order class ve property'sinde bulunan Address class'ının implementasyonu gözlemlenmektedir.
 
-```
+```csharp
 public class Order : ICloneable
 {
     public string OrderId { get; set; }
@@ -51,7 +51,7 @@ public class Address
 
 Bu class'da gözlemlendiği üzere ICloneable interface'inden gelen object return eden bir Clone methodu bulunmaktadır. Bu methodun içerisinde Order class'ının bütün propertyleri direkt kullanılarak yeni bir Order nesnesi yaratılmıştır. Bu şekilde kullanım teknik olarak nesnenin tamamen kopyalanmamasına sebebiyet vermektedir ve bu kullanıma Shallow Copy denir.
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -100,7 +100,7 @@ Shallow Copy'de bahsedilen işlemin iç içe tekrarlı bir şekilde implemente e
 
 Shallow Copy'deki örnekteki Order class'ının içerisindeki `Clone` methodunda `Address` propertysi ICloneable interface'ini implemente ederse ve Order class'ının Clone methodu `Address` in clone'unu kullanımında işlem tamamlanmış oluyor. Ancak fazla karmaşık nesnelerde, bu implementasyon da karmaşıklaşmaktadır.
 
-```
+```csharp
 public class CloneableOrder : ICloneable
 {
     public string OrderId { get; set; }
@@ -142,7 +142,7 @@ public class CloneableAddress : ICloneable
 ```
 
 program.cs
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -187,7 +187,7 @@ Ek: [Sadece Constructor'lar ile de clone işlemi yapılabilmektedir.](#ek1-const
 
 Yukarıdaki `ICloneable` interface'iyle yapılan işlemlerdeki object tipinde geri dönüşün sebebiyet verdiği zorunlu casting operasyonunun önüne geçebilmek için custom interface kullanımı gerekmektedir.
 
-```
+```csharp
 public interface ICustomCloneable<T>
 {
     T Clone();
@@ -196,7 +196,7 @@ public interface ICustomCloneable<T>
 
 Aşağıdaki kod örneklerinde gözlemlendiği üzere yukarıdaki eski implementasyonlardakinden farklı olarak `Clone()` işleminden sonra `Casting` yapılmamaktadır.
 
-```
+```csharp
 public class CustomCloneableOrder : ICustomCloneable<CustomCloneableOrder>
 {
     public string OrderId { get; set; }
@@ -275,7 +275,7 @@ OrderId: 456, ProductName: Laptop, Address: Istanbul, 34000
 
 Aşağıdaki extension method ile herhangi bir objeyi serialize ettikten sonra deserialize işlemiyle deep copy yapılabilmektedir.
 
-```
+```csharp
 public static class SerializationHelper
 {
     public static T DeepClone<T>(this T obj)
@@ -286,7 +286,7 @@ public static class SerializationHelper
 }
 ```
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -325,7 +325,7 @@ OrderId: 789, ProductName: Tablet, Address: Izmir, 35000
  
 # EK1 Constructor Copy
 
-```
+```csharp
     public Order(Order order)
     {
         OrderId = order.OrderId;
@@ -334,7 +334,7 @@ OrderId: 789, ProductName: Tablet, Address: Izmir, 35000
     }
 ```
 
-```
+```csharp
     public Address(Address address)    
     {
         City = address.City;
@@ -343,7 +343,7 @@ OrderId: 789, ProductName: Tablet, Address: Izmir, 35000
 ```
 
 Order ve Address sınıfına yukarıdaki constructorların eklenmesi ile şu şekilde bir clonelama işlemi yapılabilmektedir:
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)

@@ -20,7 +20,7 @@ Bu pattern'i kullanırken extrinsic ve intrinsic property'lere dikkat edilmesi g
 
 İkinci örnek üzerinden implementasyon yapılacak olursa öncelikle harf nesnesi oluşturulur:
 
-```
+```csharp
 public class Character
 {
     private IntrinsicCharacterProperties IntrinsicCharacterProperties { get; set; }
@@ -48,7 +48,7 @@ Yukarıdaki kod bloğundan görüldüğü üzere `Character` sınıfının üç 
 
 Aşağıdaki kod bloğu ise `IntrinsicCharacterPropertiesFlyweight` sınıfımızın içeriği. Burada basit bir şekilde nesneden üretilecek olan unique (eşsiz) bir hash veya key ile oluşturulan dictionary veri yapısına ilgili nesne eklenmektedir veya hali hazırda içerisinde saklanıyor ise ilgili methodun çağırıldığı yere ilgili instance döndürülmektedir. Böylece, font ve style'ı aynı olan nesneler tekrar tekrar initialize edilmek yerine tek bir sınıf oluşturulup her yerde o kullanılmaktadır. 
 
-```
+```csharp
 public static class IntrinsicCharacterPropertiesFlyweight
 {
     private static Dictionary<string, IntrinsicCharacterProperties> _cache = [];
@@ -78,7 +78,7 @@ Flyweight pattern'i kullanabilmek için her sınıfın içerisinde intrinsic pro
 
 Aşağıdaki kod parçacığı buna basit bir örnek:
 
-```
+```csharp
 public static class EmopFlyweight<EObject> where EObject : class
 {
     private static ConcurrentDictionary<string, EObject> _cache = [];

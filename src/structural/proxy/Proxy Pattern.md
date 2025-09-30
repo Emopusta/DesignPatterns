@@ -42,7 +42,7 @@ Görsel 1. GoF kitabından alınan Proxy Pattern diyagramı
 
 `ISubject` ve `RealSubject` implementasyonları değişmeyeceğinden her örnekte tekrarlanmaması için aşağıda verilmiştir.
 
-```
+```csharp
 public interface ISubject
 {
     void Request();
@@ -61,7 +61,7 @@ public class RealSubject : ISubject
 
 Bu varyasyonda, uzaktaki bir `Subject`'e erişmeden önce belirli kontroller sağlanması ve daha sonrasında ilgili `RealSubject`'e request'in (istek) iletilmesi sağlanır.
 
-```
+```csharp
 public class RemoteProxy : ISubject
 {
     private readonly RealSubject _realSubject;
@@ -78,7 +78,7 @@ public class RemoteProxy : ISubject
 }
 ```
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -103,7 +103,7 @@ RealSubject: Handling request.
 
 Bu varyasyonda, initialize edilecek olan `RealSubject`'in çok maliyetli olmasından kaynaklı `Lazy Loading` yapmayı sağlayan bir implementasyon sağlar. Böylece, maliyetli işlemler on-demand (talep edildiğinde) kullanılır ve maliyeti düşük işlemler aradan çıkartılabilir.
 
-```
+```csharp
 public class VirtualProxy : ISubject
 {
     private RealSubject? _realSubject;
@@ -121,7 +121,7 @@ public class VirtualProxy : ISubject
 }
 ```
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -145,7 +145,7 @@ RealSubject: Handling request.
 
 Bu varyasyonda, `RealSubject` içerisindeki methoda erişilmeden önce security (güvenlik) işlemlerinin yapılması hedeflenir. Örneğin bu methoda istek atan bir kullanıcının rolünün kontrolü.
 
-```
+```csharp
 public class ProtectionProxy : ISubject
 {
     private RealSubject? _realSubject;
@@ -174,7 +174,7 @@ public class ProtectionProxy : ISubject
 }
 ```
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)
@@ -205,7 +205,7 @@ ProtectionProxy: Access denied for non-admin users.
 
 Bu varyasyonda, metinde bahsedilen özelliklerden request miktarının sayılması kontrolünün yapıldığı bir örnek implemente edilmiştir.
 
-```
+```csharp
 public class SmartReferenceProxy : ISubject
 {
     private RealSubject _realSubject;
@@ -223,7 +223,7 @@ public class SmartReferenceProxy : ISubject
 }
 ```
 
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)

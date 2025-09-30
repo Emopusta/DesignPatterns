@@ -60,7 +60,7 @@ public interface IComponent
 Bütün node'larda kullanılacak bir fonksiyon olan `Invoke()` methodunu ve `Name` property'sini içeren bir interface oluşturuldu.
 
 Aşağıda bu interface'i implement eden iki adet örnek leaf bulunmaktadır.
-```
+```csharp
 public class FirstLeaf : IComponent
 {
     public string Name { get; init; }
@@ -90,7 +90,7 @@ public class SecondLeaf : IComponent
 
 Son olarak da Composite class'lara örnek olarak aşağıdaki gibi bir listede kendi alt componentlerini tutan ve bu listeye ekleme ve çıkarma yardımcı fonksiyonlarını içeren. Ayrıca dikkat edilmesi gereken bir konu olarak `IComponent` interface'inden türeyen bu class, Leaf'lerdeki gibi Invoke methodunu içeriyor ve ana amacı olan bütün leaf'lerindeki `Invoke` methodunu bir döngüde çağırarak implementasyonu tamamlanmıştır.
 
-```
+```csharp
 public class Composite : IComponent
 {
     private readonly List<IComponent> _leaves = [];
@@ -124,7 +124,7 @@ Görsel 1'deki gibi bir yapı kurulup, Görsel 2'deki gibi isimlendirmeler ile d
 
 ![TeorikAgac](./assets/IsimlendirilmisTeorikAgac.png)<br>
 Görsel 2. İsimlendirilmiş Teorik Ağaç (Yeşil:leaf, Kırmızı:composite)
-```
+```csharp
 internal class Program
 {
     private static void Main(string[] args)

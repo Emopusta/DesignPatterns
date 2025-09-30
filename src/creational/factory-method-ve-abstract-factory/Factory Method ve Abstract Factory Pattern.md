@@ -4,7 +4,7 @@ Factory Method: Belirli bir interface'den (arayüz) türeyen birden çok sınıf
 Örnek:
 Öncelikle hesaplama ile alakalı bir interface oluşturalım:
 
-```
+```csharp
 public interface ICalculator
 {
     int Calculate(int a, int b);
@@ -13,7 +13,7 @@ public interface ICalculator
 
 Ardından bu interface'i implemente eden üç adet toplama, çıkarma ve çarpma sınıflarının oluşturulması ve ilgili işlemleri yapan methodların doldurulması:
 
-```
+```csharp
 public class Plus : ICalculator
 {
     public int Calculate(int a, int b)
@@ -40,7 +40,7 @@ public class Multiplication : ICalculator
 
 En sonda ihtiyaca bağlı olarak içine verilen parametre değerleri ile oluşturacağımız sınıfları oluşturup bize getirecek olan factory sınıfımızı yazalım.
 
-```
+```csharp
 public class CalculateFactory : ICalculateFactory
 {
     public ICalculator GetCalculator(string type)
@@ -58,7 +58,7 @@ public class CalculateFactory : ICalculateFactory
 
 ve örneğini yapalım:
 
-```
+```csharp
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FactoryMethod;
@@ -88,7 +88,7 @@ internal class Program
 
 Bu şekilde istenilen sınıflar ilgili parametrelere göre oluşturulmaktadır ancak bu şekilde kullanım developer için çeşitli belirsizlikler ve zorluklar çıkartabilmektedir. Bu yüzden aşağıdaki kod örneğindeki gibi bir factory method kullanılırsa:
 
-```
+```csharp
 public class CalculateFactory : ICalculateFactory
 {
     public ICalculator GetPlusCalculator()
@@ -115,7 +115,7 @@ public interface ICalculateFactory
 }
 ```
 
-```
+```csharp
 internal class Program
 {
     static void Main(string[] args)
@@ -146,7 +146,7 @@ Bu şekilde kullandığımız zaman hem developer'ın kafası karışmıyor yani
 
 Abstract Factory ise birden çok factory class oluşturularak polymorphism durumu yaratır ve farklı farklı sınıfların construct işlemlerini farklı farklı şekillerde yapılabilmesini sağlamaktadır. Ancak aynı interface'i implemente etmelidir çünkü Abstract factory'nin amacı birbirine benzer yapıların farklı factory'ler ile aynı interface çatısı altında üretilmesi ve böylelikle interface'in koyduğu şart ile polymorphism kullanımı gerçekleştirilebilir bir hal almaktadır. Aşağıdaki örnekteki `SqlDatabaseConnection` içerisindeki methodların aynı interface'den türediği için bugün Sql veri tabanı kullanılırken yarın Oracle'a geçilmesi istendiğinde tek yapılması gereken IoC container'dan ilgili IDatabaseConnectionFactory interface'ine karşılık verilen concrete sınıfın değiştirilmesi olacaktır.
 
-```
+```csharp
 public interface IDatabaseConnectionFactory
 {
     IDatabaseConnection CreateConnection();
@@ -171,7 +171,7 @@ public class OracleDatabaseConnectionFactory : IDatabaseConnectionFactory
 Ancak bahsedildiği şekilde ortak bir interface kullanılmadan yapılan implementasyonda construct edilen sınıfların içeriğinin aynı olmaması durumunda bir sınıfta olmayan method ötekinde varsa kodda bu değişiklik sonucunda bu methodların kullanıldığı yerler ötekinde olmayacağı için ciddi sıkıntılar yaşanabilir. O yüzden factory methodların dönüş tiplerinin eğer polymorphism kullanılacaksa aynı olması gerekmektedir. bu dönüş tipini ilgili sınıfları implement eden bir interface olarak seçerek daha sağlıklı bir sınırlandırma getirmiş oluruz.
 bahsettiğim worst case ise aşağıdaki gibidir:
 
-```
+```csharp
 
 class SqlDatabaseConnectionFactory
 {
@@ -192,7 +192,7 @@ class OracleDatabaseConnectionFactory
 
 fark edildiği üzere factory class'larda herhangi bir interface ile ortak imzalama bulunmadığı için bir factory'yi ötekisinin yerine kullanmak imkansızlaşıyor. Yukarıdaki kodun biraz iyileştirilmiş versiyonu ile polymorphism odaklı bir değişim yapmasak da kodumuzu strictly coupled halden loosely coupled'a çekebiliriz.
 
-```
+```csharp
 public interface IOracleDatabaseConnectionFactory
 {
     OracleDatabaseConnection CreateConnection(string connectionString);
@@ -212,7 +212,7 @@ Böylelikle Dependency Injection kullanarak test edilebilir ve polymorphism'den 
 
 bir console uygulamasında basitleştirilmiş örneğine aşağıdan ulaşabilirsiniz:
 
-```
+```csharp
 static void Main(string[] args)
 {
     ServiceProvider serviceProvider = new ServiceCollection()
@@ -246,7 +246,7 @@ ikinci ve çok temiz olmayan bir çözüm olan inner class tekniği ile, ilgili 
 
 ör:
 
-```
+```csharp
 public class OracleDatabaseConnection
 {
     public string Con { get; set; }
