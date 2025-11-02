@@ -11,7 +11,7 @@ kullanıldığı yerlerde parantez içerisinde Türkçe yazılmış olup devamı
     - Strategy
     - [Observer](./src/behavioral/observer/Observer%20Pattern.md)
     - Command
-    - Iterator
+    - [Iterator](./src/behavioral/iterator/Iterator%20Pattern.md)
     - State
     - Memento
     - [Mediator](./src/behavioral/mediator/Mediator%20Pattern.md)
