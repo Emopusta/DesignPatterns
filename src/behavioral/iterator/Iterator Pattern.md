@@ -70,6 +70,46 @@ Böylece, `ConcreteAggregate` class'ı kendi içerisinde saklanan `_items` dizis
 
 Ek olarak, List<T> class'ı aslında iterator pattern'i destekleyen bir implementasyona sahiptir. Implemente ettiği `IEnumerable` interface'i ile `IAggregate` aynı implementasyonu sağlar ve yukarıdaki örneğe çok benzer bir implementasyon ile `Enumerator` struct'ını (Yukarıdaki örnekteki ConcreteIterator) döndürür ve iterasyon yapılabilir bir hale bürünür. 
 
+Kullanım örneği:
+```csharp
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        ConcreteAggregate aggregate = new ConcreteAggregate();
+        aggregate.AddItem("Item 1");
+        aggregate.AddItem("Item 2");
+        aggregate.AddItem("Item 3");
+
+        IIterator iterator = aggregate.CreateIterator();
+
+        while (true)
+        {
+            try
+            {
+                object item = iterator.Next();
+                Console.WriteLine(item);
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Iteration ended.");
+                break;
+            }
+        }
+    }
+}
+```
+
+Çıktı:
+```
+Item 1
+Item 2
+Item 3
+No more elements to iterate.
+Iteration ended.
+```
+
 ## Kaynakça
 
 Ücretsiz:
